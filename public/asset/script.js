@@ -1,15 +1,16 @@
-fetch('https://api.medanpedia.co.id/profile')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-    // tampilkan data di halaman
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-    alert('Error fetching data from API');
-  });
+document.getElementById("getDataButton").addEventListener("click", function() {
+  fetch('/profile')
+    .then(response => response.json())
+    .then(data => {
+      const resultDiv = document.getElementById("result");
+      if (data.status === false) {
+        resultDiv.innerHTML = `<p>Error: ${data.msg}</p>`;
+      } else {
+        resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching data from API:", error);
+      document.getElementById("result").innerHTML = "<p>Error fetching data from API</p>";
+    });
+});
