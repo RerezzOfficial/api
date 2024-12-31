@@ -7,13 +7,6 @@
     }
   ],
   "routes": [
-    {
-      "src": "/profile",
-      "dest": "/profile"
-    },
-    {
-      "src": "/",
-      "dest": "/"
-    }
+    { "src": "/(.*)", "dest": "/index.js" }
   ]
 }
