@@ -1,36 +1,24 @@
 const express = require('express');
-const axios = require('axios');
 const app = express();
-const port = process.env.PORT || 3000;
+const path = require('path');
+const fetch = require('node-fetch');
 
-// API endpoint
-const apiUrl = 'https://api.medanpedia.co.id/profile';
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
-
-// Route untuk halaman utama
-app.get('/', async (req, res) => {
-  try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-    res.render('index', { data });
-  } catch (error) {
-    res.status(500).send('Error fetching data from API');
-  }
-});
-
-// Route untuk halaman profile
+// Route untuk mengambil data API
 app.get('/profile', async (req, res) => {
   try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-    res.render('profile', { data });
+    const apiUrl = 'https://api.medanpedia.co.id/profile';  // Ganti dengan API endpoint Anda
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    res.json(data);
   } catch (error) {
-    res.status(500).send('Error fetching data from API');
+    res.status(500).json({ status: false, msg: "Error fetching data from API" });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+// Run server
+app.listen(3000, () => {
+  console.log('Server berjalan di http://localhost:3000');
 });
