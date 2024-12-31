@@ -1,14 +1,14 @@
 const express = require('express');
-const cors = require('cors');  // Add CORS package
-const app = express();
 const path = require('path');
-const fetch = require('node-fetch');
+const app = express();
 
-// Enable CORS for all requests
-app.use(cors());
-
-// Serve static files
+// Serve static files from 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Route untuk halaman utama
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));  // Pastikan mengarah ke file index.html di folder public
+});
 
 // Route untuk mengambil data API
 app.get('/profile', async (req, res) => {
@@ -22,7 +22,6 @@ app.get('/profile', async (req, res) => {
   }
 });
 
-// Run server
 app.listen(3000, () => {
   console.log('Server berjalan di http://localhost:3000');
 });
